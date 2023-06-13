@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "objection.troll"
+version = "0.1.0"
+description = ""
+authors = ["Cap <96lb@96lb.ml>"]
+
+[tool.poetry.dependencies]
+python = ">=3.11.0"
+objectionpy = {git = "https://github.com/96-LB/objection.py.git#egg=objectionpy&subdirectory=src/objectionpy", rev = "master"}
+urllib3 = "1.26.15"
+
+[tool.poetry.dev-dependencies]
+debugpy = "^1.6.2"
+replit-python-lsp-server = {extras = ["yapf", "rope", "pyflakes"], version = "^1.5.9"}
+
+[tool.pyright]
+venv = ".venv"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
