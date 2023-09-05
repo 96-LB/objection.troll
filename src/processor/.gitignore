@@ -1,2 +1,5 @@
 .venv
 **.objection
+temp
+pycache
+input
