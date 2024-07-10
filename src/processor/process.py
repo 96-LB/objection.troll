@@ -17,7 +17,7 @@ bg_map = {
     186: (118549, .5),
     182: (118549, 1),
     # aj judge
-    178: (118583, 0),
+    178: (118583, 0)
 }
 
 
@@ -42,20 +42,20 @@ def process(data):
         elif '[@pl]' in frame.text:
             frame.text = frame.text.replace('[@pl]', '')
             scene.frames[i - 1].poseAnim ^= True # toggles preanimation of last frame
-    
+    # TODO: do all [@al] first, then all [@dl], etc
     
     i = 0
     while i < len(scene.frames):
         frame = scene.frames[i]
         
-        bg = frame.background or (frame.char.character.background if frame.char else Background(0))
-        
-        if bg.id in bg_map:
-            new_bg, x = bg_map[bg.id]
-            frame.background = Background(new_bg)
-            frame.wideX = x if not frame.backgroundFlip else 1 - x
-            frame.transition = Transition(0, Easing.EASE_IN_OUT_EXPONENTIAL)
-
+        if not frame.char or frame.char.character.id not in (102, ): # TODO: add pw gallery here
+            bg = frame.background or (frame.char.character.background if frame.char else Background(0))
+            if bg.id in bg_map:
+                new_bg, x = bg_map[bg.id]
+                frame.background = Background(new_bg)
+                frame.wideX = x if not frame.backgroundFlip else 1 - x
+                frame.transition = Transition(0, Easing.EASE_IN_OUT_EXPONENTIAL)
+                
         if frame.presetPopup is PresetPopup.CROSS_EXAMINATION:
             frame.centerText = True
             frame.presetBlip = PresetBlip.TYPEWRITER
@@ -123,9 +123,12 @@ def process(data):
         
         frame.text = frame.text.strip()
         frame.text = re.sub(r'([.?!;:])(\s)', r'\1[#p250]\2', frame.text)
-        frame.text = re.sub(r'(,-)(\s)', r'\1[#p100]\2', frame.text)
+        frame.text = re.sub(r'([,-])(\s)', r'\1[#p100]\2', frame.text)
+        frame.text = re.sub(r'(Mr.|Ms.|Mrs.|Dr.)(\[#p250\])', r'\1', frame.text)
+        frame.text = re.sub(r'(--)(\[#p100\])( )', r'\1\3', frame.text)
+        if frame.text and frame.text[-1] not in '.?!-)]':
+            frame.text += '.'
         
         i += 1
-    
     
     return scene.compile()
