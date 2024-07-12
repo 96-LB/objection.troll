@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "objection.troll"
+version = "0.1.0"
+description = ""
+authors = ["96 LB <96lb@96lb.me>"]
+
+
+[tool.poetry.dependencies]
+python = ">=3.12.0"
+
+
+[tool.pyright]
+venv = ".venv"
+typeCheckingMode = "strict"
+
+reportUnknownMemberType = false
+reportUnknownVariableType = false
+reportMissingTypeStubs = false
