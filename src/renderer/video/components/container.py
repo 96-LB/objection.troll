@@ -1,10 +1,11 @@
 from PIL.ImageDraw import ImageDraw as Draw
 
 from .component import Component
+from util.pod.plist import PList
 
 
 class Container[T: Component](Component):
-    children: tuple[T, ...]
+    children: PList[T]
     
     
     @property
@@ -25,7 +26,7 @@ class Container[T: Component](Component):
     def time(self):
         if not self.children:
             return 0
-        return sum(child.delay for child in self.children[:-1]) + self.children[-1].time
+        return sum(child.delay for child in self.children) - self.children[-1].delay + self.children[-1].time
     
     
     def draw(self, draw: Draw, x: float, y: float, time: float, global_time: float):
