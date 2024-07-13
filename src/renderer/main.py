@@ -17,7 +17,6 @@ scene = Scene(
     ),
 )
 
-for time in range(400):
-    a = scene.render_frame(time / 20)
-    a.save(f'temp/frame_{time:03d}.png')
-    print(time)
+for i, frame in enumerate(scene.render_frames(20)):
+    frame.save(f'temp/frame_{i:05d}.png')
+    print(i)

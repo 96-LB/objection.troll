@@ -1,9 +1,8 @@
 from abc import ABC, abstractmethod
 from functools import cached_property
 
-from PIL.ImageDraw import ImageDraw as Draw
-
 from util.pod import Pod
+from util.renderer import Renderer
 
 
 class Component(Pod, ABC):
@@ -28,6 +27,6 @@ class Component(Pod, ABC):
         ...
     
     @abstractmethod
-    def draw(self, draw: Draw, x: int, y: int, time: float, global_time: float):
+    def draw(self, draw: Renderer, x: int, y: int, time: float, global_time: float):
         ...
     

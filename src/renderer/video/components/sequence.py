@@ -1,9 +1,8 @@
 from functools import cached_property
 
-from PIL.ImageDraw import ImageDraw as Draw
-
 from .component import Component
 from .container import Container
+from util.renderer import Renderer
 
 
 class Sequence[T: Component](Container[T]):
@@ -17,7 +16,7 @@ class Sequence[T: Component](Container[T]):
         return x, y
     
     
-    def draw(self, draw: Draw, x: int, y: int, time: float, global_time: float):
+    def draw(self, draw: Renderer, x: int, y: int, time: float, global_time: float):
         for child in self.children:
             child.draw(draw, x, y, time, global_time)
             time -= child.delay

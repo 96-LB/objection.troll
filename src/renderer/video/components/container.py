@@ -1,9 +1,8 @@
 from functools import cached_property
 
-from PIL.ImageDraw import ImageDraw as Draw
-
 from .component import Component
-from util.pod.plist import PList
+from util.pod import PList
+from util.renderer import Renderer
 
 
 class Container[T: Component](Component):
@@ -35,7 +34,7 @@ class Container[T: Component](Component):
         return sum((child.audio for child in self.children), ())
     
     
-    def draw(self, draw: Draw, x: int, y: int, time: float, global_time: float):
+    def draw(self, draw: Renderer, x: int, y: int, time: float, global_time: float):
         for child in self.children:
             child.draw(draw, x, y, time, global_time)
             time -= child.delay

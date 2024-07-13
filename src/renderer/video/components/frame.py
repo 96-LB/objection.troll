@@ -1,11 +1,10 @@
 from functools import cached_property
 
-from PIL.ImageDraw import ImageDraw as Draw
-
 from .component import Component
 from .gif import Gif
 from .scratch import Textbox, Character
-from util.pod.plist import PList
+from util.pod import PList
+from util.renderer import Renderer
 
 
 class Frame(Component):
@@ -33,7 +32,7 @@ class Frame(Component):
     
     @cached_property
     def time(self):
-        return 0
+        return 10
     
     
     @cached_property
@@ -41,7 +40,7 @@ class Frame(Component):
         return ()
     
     
-    def draw(self, draw: Draw, x: int, y: int, time: float, global_time: float):
+    def draw(self, draw: Renderer, x: int, y: int, time: float, global_time: float):
         self.background.draw(draw, x, y, time, global_time)
         #self.textbox.draw(draw, x, y, time, global_time)
         #for character in self.character:

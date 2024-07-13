@@ -1,10 +1,10 @@
 from functools import cache, cached_property
 
-from .component import Component
 from PIL import Image
-from PIL.ImageDraw import ImageDraw as Draw
 from PIL.GifImagePlugin import GifImageFile
 
+from .component import Component
+from util.renderer import Renderer
 
 class Gif(Component):
     _image: Image.Image
@@ -33,6 +33,7 @@ class Gif(Component):
     @cached_property
     def times(self):
         if not isinstance(self._image, GifImageFile):
+            print(type(self._image))
             return ()
         
         times: list[float] = []
@@ -52,22 +53,22 @@ class Gif(Component):
         
         if 'loop' in self._image.info:
             time = time % self.time
-                
+        
         for frame, frame_time in enumerate(self.times):
             if time < frame_time:
                 return frame
             time -= frame_time
         
         return len(self.times) - 1
-        
     
-    def draw(self, draw: Draw, x: int, y: int, time: float, global_time: float):
+    
+    def draw(self, draw: Renderer, x: int, y: int, time: float, global_time: float):
         frame = self.get_frame(time)
         self._image.seek(frame)
-        draw._image.alpha_composite(self._image, (x, y))
+        draw.alpha_composite(self._image.convert('RGBA'), (x, y))
     
     
     @classmethod
     @cache
     def open(cls, filename: str):
-        return cls(Image.open(filename).convert('RGBA'))
+        return cls(Image.open(filename))

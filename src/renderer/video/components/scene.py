@@ -1,12 +1,16 @@
-from PIL import Image, ImageDraw
-
 from .frame import Frame
 from .sequence import Sequence
+from util.renderer import Renderer
 
 
 class Scene(Sequence[Frame]):
+    
     def render_frame(self, time: float):
-        image = Image.new('RGBA', self.size, (0, 0, 0, 0))
-        draw = ImageDraw.Draw(image)
+        draw = Renderer(*self.size)
         self.draw(draw, 0, 0, time, time)
-        return image
+        return draw.image
+    
+    
+    def render_frames(self, fps: float):
+        for time in range(int(self.time * fps)):
+            yield self.render_frame(time / fps)
