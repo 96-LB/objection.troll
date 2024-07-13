@@ -46,4 +46,4 @@ class Frame(Component):
         #self.textbox.draw(draw, x, y, time, global_time)
         #for character in self.character:
         #    character.draw(draw, x, y, time, global_time)
-        #self.foreground.draw(draw, x, y, time, global_time)
+        self.foreground.draw(draw, x, y, time, global_time)

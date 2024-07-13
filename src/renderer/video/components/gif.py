@@ -47,8 +47,12 @@ class Gif(Component):
     
     
     def get_frame(self, time: float):
-        time = time % self.time
+        if not self.times:
+            return 0
         
+        if 'loop' in self._image.info:
+            time = time % self.time
+                
         for frame, frame_time in enumerate(self.times):
             if time < frame_time:
                 return frame
@@ -60,10 +64,10 @@ class Gif(Component):
     def draw(self, draw: Draw, x: int, y: int, time: float, global_time: float):
         frame = self.get_frame(time)
         self._image.seek(frame)
-        draw._image.paste(self._image, (x, y))
+        draw._image.alpha_composite(self._image, (x, y))
     
     
     @classmethod
     @cache
     def open(cls, filename: str):
-        return cls(Image.open(filename))
+        return cls(Image.open(filename).convert('RGBA'))
