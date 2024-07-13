@@ -9,7 +9,7 @@ scene = Scene(
             width=1920,
             height=1080,
             background=Gif.open('image.gif'),
-            foreground=Gif.open('image2.gif'),
+            foreground=Gif.open('image.webp'),
             textbox=None,
             character=(),
             active_character=0,
@@ -17,6 +17,7 @@ scene = Scene(
     ),
 )
 
-for i, frame in enumerate(scene.render_frames(20)):
-    frame.save(f'temp/frame_{i:05d}.png')
-    print(i)
+
+from video.video import render_scene
+
+render_scene(scene, 'output', 'temp', 20)

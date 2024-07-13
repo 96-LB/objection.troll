@@ -2,9 +2,11 @@ from functools import cache, cached_property
 
 from PIL import Image
 from PIL.GifImagePlugin import GifImageFile
+from PIL.WebPImagePlugin import WebPImageFile
 
+from ..renderer import Renderer
 from .component import Component
-from util.renderer import Renderer
+
 
 class Gif(Component):
     _image: Image.Image
@@ -32,18 +34,20 @@ class Gif(Component):
     
     @cached_property
     def times(self):
-        if not isinstance(self._image, GifImageFile):
-            print(type(self._image))
+        if not isinstance(self._image, (GifImageFile, WebPImageFile)):
             return ()
         
         times: list[float] = []
         for frame in range(self._image.n_frames):
             self._image.seek(frame)
+            self._image.load()
             try:
                 times.append(float(self._image.info['duration']) / 1000)
-            except (KeyError, ValueError):
-                pass
+            except (KeyError, ValueError) as e:
+                print(f'Error: {e}')
+                times.append(0)
         
+
         return tuple(times)
     
     

@@ -2,7 +2,7 @@ from functools import cached_property
 
 from .component import Component
 from .container import Container
-from util.renderer import Renderer
+from video.renderer import Renderer
 
 
 class Sequence[T: Component](Container[T]):

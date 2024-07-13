@@ -13,6 +13,3 @@ class Line(Container[Word]):
 
 class Textbox(Container[Line]):
     ...
-
-class Character(Component):
-    ...

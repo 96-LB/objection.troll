@@ -1,10 +1,11 @@
 from functools import cached_property
 
+from ..renderer import Renderer
+from .character import Character
 from .component import Component
 from .gif import Gif
-from .scratch import Textbox, Character
+from .scratch import Textbox
 from util.pod import PList
-from util.renderer import Renderer
 
 
 class Frame(Component):
@@ -32,11 +33,11 @@ class Frame(Component):
     
     @cached_property
     def time(self):
-        return 10
+        return 5
     
     
     @cached_property
-    def audio(self):
+    def audio(self) -> tuple[tuple[float, str], ...]:
         return ()
     
     

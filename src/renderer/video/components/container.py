@@ -1,8 +1,8 @@
 from functools import cached_property
 
+from ..renderer import Renderer
 from .component import Component
 from util.pod import PList
-from util.renderer import Renderer
 
 
 class Container[T: Component](Component):

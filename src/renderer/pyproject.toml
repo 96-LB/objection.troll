@@ -8,6 +8,7 @@ authors = ["96 LB <96lb@96lb.me>"]
 [tool.poetry.dependencies]
 python = ">=3.12.0"
 pillow = "^10.4.0"
+moviepy = "^1.0.3"
 
 
 [tool.pyright]

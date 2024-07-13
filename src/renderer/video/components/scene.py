@@ -1,6 +1,8 @@
+from math import ceil
+
+from ..renderer import Renderer
 from .frame import Frame
 from .sequence import Sequence
-from util.renderer import Renderer
 
 
 class Scene(Sequence[Frame]):
@@ -12,5 +14,5 @@ class Scene(Sequence[Frame]):
     
     
     def render_frames(self, fps: float):
-        for time in range(int(self.time * fps)):
+        for time in range(ceil(self.time * fps)):
             yield self.render_frame(time / fps)
