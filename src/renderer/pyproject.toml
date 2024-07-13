@@ -16,4 +16,5 @@ typeCheckingMode = "strict"
 
 reportUnknownMemberType = false
 reportUnknownVariableType = false
+reportUnknownArgumentType = false
 reportMissingTypeStubs = false
