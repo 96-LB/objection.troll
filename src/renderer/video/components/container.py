@@ -34,9 +34,9 @@ class Container[T: Component](Component):
         return sum((child.audio for child in self.children), ())
     
     
-    def draw(self, draw: Renderer, x: int, y: int, time: float, global_time: float):
+    def draw(self, renderer: Renderer, x: int, y: int, time: float, global_time: float):
         for child in self.children:
-            child.draw(draw, x, y, time, global_time)
+            child.draw(renderer, x, y, time, global_time)
             time -= child.delay
             x += child.size[0]
             y += child.size[1]

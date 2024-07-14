@@ -66,10 +66,10 @@ class Gif(Component):
         return len(self.times) - 1
     
     
-    def draw(self, draw: Renderer, x: int, y: int, time: float, global_time: float):
+    def draw(self, renderer: Renderer, x: int, y: int, time: float, global_time: float):
         frame = self.get_frame(time)
         self._image.seek(frame)
-        draw.alpha_composite(self._image.convert('RGBA'), (x, y))
+        renderer.image.alpha_composite(self._image.convert('RGBA'), (x, y))
     
     
     @classmethod

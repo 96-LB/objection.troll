@@ -27,6 +27,6 @@ class Component(Pod, ABC):
         ...
     
     @abstractmethod
-    def draw(self, draw: Renderer, x: int, y: int, time: float, global_time: float):
+    def draw(self, renderer: Renderer, x: int, y: int, time: float, global_time: float):
         ...
     
