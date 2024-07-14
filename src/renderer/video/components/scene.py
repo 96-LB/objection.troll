@@ -1,6 +1,6 @@
 from math import ceil
 
-from ..renderer import Renderer
+from ..context import Context
 from .frame import Frame
 from .sequence import Sequence
 
@@ -8,9 +8,9 @@ from .sequence import Sequence
 class Scene(Sequence[Frame]):
     
     def render_frame(self, time: float):
-        draw = Renderer(*self.size)
-        self.draw(draw, 0, 0, time, time)
-        return draw.image
+        ctx = Context.new(*self.size).but(time=time)
+        self.draw(ctx)
+        return ctx.image
     
     
     def render_frames(self, fps: float):

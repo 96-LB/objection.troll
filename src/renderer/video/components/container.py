@@ -1,6 +1,6 @@
 from functools import cached_property
 
-from ..renderer import Renderer
+from ..context import Context
 from .component import Component
 from util.pod import PList
 
@@ -15,18 +15,11 @@ class Container[T: Component](Component):
             x += child.size[0]
             y += child.size[1]
         return x, y
-        
-        
-    @cached_property
-    def delay(self):
-        return sum(child.delay for child in self.children)
     
     
     @cached_property
     def time(self):
-        if not self.children:
-            return 0
-        return sum(child.delay for child in self.children) - self.children[-1].delay + self.children[-1].time
+        return sum(child.time for child in self.children)
     
     
     @cached_property
@@ -34,9 +27,7 @@ class Container[T: Component](Component):
         return sum((child.audio for child in self.children), ())
     
     
-    def draw(self, renderer: Renderer, x: int, y: int, time: float, global_time: float):
+    def draw(self, ctx: Context):
         for child in self.children:
-            child.draw(renderer, x, y, time, global_time)
-            time -= child.delay
-            x += child.size[0]
-            y += child.size[1]
+            child.draw(ctx)
+            ctx = ctx.plus(time=-child.time, x=child.size[0], y=child.size[1])

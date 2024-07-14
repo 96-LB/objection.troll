@@ -2,7 +2,7 @@ from functools import cached_property
 
 from .component import Component
 from .container import Container
-from video.renderer import Renderer
+from video.context import Context
 
 
 class Sequence[T: Component](Container[T]):
@@ -16,7 +16,8 @@ class Sequence[T: Component](Container[T]):
         return x, y
     
     
-    def draw(self, renderer: Renderer, x: int, y: int, time: float, global_time: float):
+    def draw(self, ctx: Context):
+        time = ctx.time
         for child in self.children:
-            child.draw(renderer, x, y, time, global_time)
-            time -= child.delay
+            child.draw(ctx)
+            time -= child.time

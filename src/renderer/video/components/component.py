@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from functools import cached_property
 
-from ..renderer import Renderer
+from ..context import Context
 from util.pod import Pod
 
 
@@ -9,11 +9,6 @@ class Component(Pod, ABC):
     @cached_property
     @abstractmethod
     def size(self) -> tuple[int, int]:
-        ...
-    
-    @cached_property
-    @abstractmethod
-    def delay(self) -> float:
         ...
     
     @cached_property
@@ -27,6 +22,6 @@ class Component(Pod, ABC):
         ...
     
     @abstractmethod
-    def draw(self, renderer: Renderer, x: int, y: int, time: float, global_time: float):
+    def draw(self, ctx: Context):
         ...
     

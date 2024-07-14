@@ -1,6 +1,6 @@
 from functools import cached_property
 
-from ..renderer import Renderer
+from ..context import Context
 from .character import Character
 from .component import Component
 from .gif import Gif
@@ -41,9 +41,9 @@ class Frame(Component):
         return ()
     
     
-    def draw(self, renderer: Renderer, x: int, y: int, time: float, global_time: float):
-        self.background.draw(renderer, x, y, time, global_time)
+    def draw(self, ctx: Context):
+        self.background.draw(ctx)
         for character in self.character:
-            character.draw(renderer, x, y, time, global_time)
-        self.foreground.draw(renderer, x, y, time, global_time)
-        self.textbox.draw(renderer, x, y, time, global_time)
+            character.draw(ctx)
+        self.foreground.draw(ctx)
+        self.textbox.draw(ctx)

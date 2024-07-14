@@ -2,7 +2,7 @@ from functools import cached_property
 
 from PIL.ImageFont import FreeTypeFont
 
-from ..renderer import Renderer
+from ..context import Context
 from .component import Component
 
 
@@ -33,6 +33,6 @@ class Text(Component):
     def audio(self):
         return () # TODO: text blips
     
-    def draw(self, renderer: Renderer, x: int, y: int, time: float, global_time: float):
-        if time > 0:
-            renderer.draw.text((x, y), self.char, font=self.font, fill='white')
+    def draw(self, ctx: Context):
+        if ctx.time > 0:
+            ctx.draw.text(ctx.pos, self.char, font=self.font, fill='white')

@@ -4,7 +4,7 @@ from PIL import Image
 from PIL.GifImagePlugin import GifImageFile
 from PIL.WebPImagePlugin import WebPImageFile
 
-from ..renderer import Renderer
+from ..context import Context
 from .component import Component
 
 
@@ -66,10 +66,10 @@ class Gif(Component):
         return len(self.times) - 1
     
     
-    def draw(self, renderer: Renderer, x: int, y: int, time: float, global_time: float):
-        frame = self.get_frame(time)
+    def draw(self, ctx: Context):
+        frame = self.get_frame(ctx.time)
         self._image.seek(frame)
-        renderer.image.alpha_composite(self._image.convert('RGBA'), (x, y))
+        ctx.image.alpha_composite(self._image.convert('RGBA'), ctx.pos)
     
     
     @classmethod
