@@ -8,8 +8,8 @@ scene = Scene(
         Frame(
             width=1920,
             height=1080,
-            background=Gif.open('image.gif'),
-            foreground=Gif.open('image.webp'),
+            background=Gif.open('image2.gif'),
+            foreground=Gif.open('image2.webp'),
             textbox=None,
             character=(),
             active_character=0,
@@ -20,4 +20,4 @@ scene = Scene(
 
 from video.video import render_scene
 
-render_scene(scene, 'output', 'temp', 20)
+render_scene(scene, 'output', 'temp', 60)
