@@ -10,7 +10,7 @@ scene = Scene(
             height=1080,
             background=Gif.open('image2.gif'),
             foreground=Gif.open('image2.webp'),
-            textbox=Textbox(input='Mr. Wright, I added smarter pauses... and a     whole        bunch  of     spaces           between          each                  word. And also a wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww'),
+            textbox=Textbox(input='Text speed modifications.[/ts100] Typing really slowly... [/ts10] Typing really quickly! Really really quickly! [/ts30]The default speed is 30.'),
             character=(),
             active_character=0,
         ),
@@ -20,4 +20,4 @@ scene = Scene(
 
 from video.video import render_scene
 
-render_scene(scene, 'output', 'temp', 2)
+render_scene(scene, 'output', 'temp', 30)

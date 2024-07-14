@@ -43,12 +43,17 @@ class Textbox(Component):
     def display(self, textspeed: float, max: float = float('inf')):
         text = ''
         time = 0
-        
+        c = 0
+        delay = textspeed
         for char in self.text:
             if time > max:
                 break
             
             if char == '§':
+                command = self.commands[c]
+                if command.startswith('ts'):
+                    delay = float(command[2:]) / 1000
+                c += 1
                 continue
             
             if char.isspace():
@@ -59,7 +64,7 @@ class Textbox(Component):
                     if not text == '--':
                         time += 0.1
             else:
-                time += textspeed
+                time += delay
             
             text += char
         
