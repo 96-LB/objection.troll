@@ -64,6 +64,10 @@ class Textbox(Component):
                 command = self.commands[c]
                 if command.startswith('ts'):
                     delay = float(command[2:]) / 1000
+                elif command.startswith('p'):
+                    time += float(command[1:]) / 1000
+
+                
                 c += 1
                 continue
             
