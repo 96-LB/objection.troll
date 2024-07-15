@@ -24,24 +24,22 @@ class Frame(Component):
     @cached_property
     def size(self):
         return self.width, self.height
-    
-    
-    @cached_property
-    def delay(self):
-        return 0
-    
+        
     
     @cached_property
     def time(self):
-        return 8
+        return self.textbox.time + 0.75
     
     
     @cached_property
     def audio(self) -> tuple[tuple[float, str], ...]:
-        return ()
+        return self.textbox.audio
     
     
     def draw(self, ctx: Context):
+        if not 0 <= ctx.time < self.time:
+            return
+        
         self.background.draw(ctx)
         for character in self.character:
             character.draw(ctx)

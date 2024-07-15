@@ -24,7 +24,13 @@ class Container[T: Component](Component):
     
     @cached_property
     def audio(self) -> tuple[tuple[float, str], ...]:
-        return sum((child.audio for child in self.children), ())
+        audio = []
+        time = 0
+        for child in self.children:
+            for t, a in child.audio:
+                audio.append((time + t, a))
+            time += child.time
+        return tuple(audio)
     
     
     def draw(self, ctx: Context):

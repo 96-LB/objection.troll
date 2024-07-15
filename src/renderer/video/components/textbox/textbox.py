@@ -1,23 +1,32 @@
 import re
-
+from abc import abstractmethod
 from functools import cached_property
 
 from PIL import ImageFont
 
-from ..context import Context
-from .component import Component
+from ...context import Context
+from ..component import Component
+
+from typing import ClassVar
 
 
-font = ImageFont.truetype('aa.otf', 96)
-limit = 1600
-line_height: int = 128
-pos: tuple[int, int] = (100, 100)
-size: tuple[int, int] = (1680, 1232)
-margin: int = 40
-textspeed: float = .03
 COMMAND = re.compile(r'\[/[^\]]+\]')
 class Textbox(Component):
+    x: ClassVar[int]
+    y: ClassVar[int]
+    width: ClassVar[int]
+    line_height: ClassVar[int]
+    font: ClassVar[ImageFont.FreeTypeFont]
     input: str
+    
+    
+    def __init_subclass__(cls, x: int, y: int, width: int, line_height: int, font: ImageFont.FreeTypeFont):
+        cls.x = x
+        cls.y = y
+        cls.width = width
+        cls.line_height = line_height
+        cls.font = font
+        return super().__init_subclass__()
         
     @cached_property
     def text(self):
@@ -28,7 +37,7 @@ class Textbox(Component):
                     return text[:i + 1] + split_lines(text[i + 1:])
                 elif text[i].isspace():
                     saved = i
-                elif font.getlength(text[:i + 1]) > limit:
+                elif self.font.getlength(text[:i + 1]) > self.width:
                     return text[:saved or i] + '\n' + split_lines(text[(saved or i) + 1:])
             return text
         
@@ -40,13 +49,15 @@ class Textbox(Component):
         return tuple(x[2:-1] for x in re.findall(COMMAND, self.input)) # TODO: make these commands
     
     
-    def display(self, textspeed: float, max: float = float('inf')):
+    def display(self, *, max_time: float = float('inf')):
         text = ''
         time = 0
         c = 0
-        delay = textspeed
+        delay = 0.03
+        audio: list[tuple[float, str]] = []
+        blip = -999
         for char in self.text:
-            if time > max:
+            if time >= max_time:
                 break
             
             if char == '§':
@@ -65,29 +76,35 @@ class Textbox(Component):
                         time += 0.1
             else:
                 time += delay
+                if time > blip + 0.064:
+                    blip = max(time - delay, blip + 0.064)
+                    audio.append((blip, 'blip.wav'))
             
             text += char
         
-        return text, time
+        return text, time, tuple(audio)
     
     
     @cached_property
     def size(self):
-        return size
+        return 0, 0
     
     
     @cached_property
     def time(self):
-        return self.display(textspeed)[1]
+        return self.display()[1]
     
     
+    @cached_property
+    def audio(self):
+        return self.display()[2]
+    
+    
+    @abstractmethod
     def draw(self, ctx: Context):
-        x = ctx.x + pos[0]
-        y = ctx.y + pos[1]
-        ctx.draw.rectangle((x, y, x + size[0], y + size[1]), fill=(0, 32, 64, 255), outline=(0, 64, 128, 255))
-        
-        text, _ = self.display(textspeed, ctx.time)
-        
+        text = self.display(max_time=ctx.time)[0]
+        x = ctx.x + self.x
+        y = ctx.y + self.y
         for line in text.split('\n'):
-            ctx.draw.text((x + margin, y + margin), line, font=font, fill='white', spacing=16)
-            y += line_height
+            ctx.draw.text((x, y), line, font=self.font, fill='white', spacing=16)
+            y += self.line_height

@@ -24,4 +24,3 @@ class Component(Pod, ABC):
     @abstractmethod
     def draw(self, ctx: Context):
         ...
-    

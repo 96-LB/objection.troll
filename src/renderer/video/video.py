@@ -22,12 +22,11 @@ def get_image_clip(scene: Scene, path: str, fps: float, *, verbose: bool = True)
 
 def get_audio_clip(scene: Scene):
     audio = []
-    for frame in scene.children:
-        for time, sound in frame.audio:
-            file =  sound + '.mp3' # TODO: probably subpath this
-            if os.path.isfile(file):
-                clip = AudioFileClip(file).set_start(time)
-                audio.append(clip)
+    for time, sound in scene.audio:
+        file = sound # TODO: probably subpath this
+        if os.path.isfile(file):
+            clip = AudioFileClip(file).set_start(time)
+            audio.append(clip)
     
     return CompositeAudioClip(audio) if audio else None
 

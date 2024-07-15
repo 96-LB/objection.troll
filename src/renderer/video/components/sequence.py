@@ -17,7 +17,6 @@ class Sequence[T: Component](Container[T]):
     
     
     def draw(self, ctx: Context):
-        time = ctx.time
         for child in self.children:
             child.draw(ctx)
-            time -= child.time
+            ctx = ctx.plus(time=-child.time)
