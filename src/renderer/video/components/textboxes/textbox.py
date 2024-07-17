@@ -1,33 +1,41 @@
-import re
 from abc import abstractmethod
 from functools import cached_property
 
 from PIL import ImageFont
 
 from ...context import Context
+from ..commands import Command, TextSpeedCommand, PauseCommand, BackgroundSoundCommand
 from ..component import Component
 
 from typing import ClassVar
 
 
-COMMAND = re.compile(r'\[/[^\]]+\]')
 class Textbox(Component):
     x: ClassVar[int]
     y: ClassVar[int]
     width: ClassVar[int]
     line_height: ClassVar[int]
     font: ClassVar[ImageFont.FreeTypeFont]
+    blip_speed: ClassVar[float]
+    
     input: str
     
     
-    def __init_subclass__(cls, x: int, y: int, width: int, line_height: int, font: ImageFont.FreeTypeFont):
+    def __init_subclass__(cls, x: int, y: int, width: int, line_height: int, font: ImageFont.FreeTypeFont, blip_speed: float):
         cls.x = x
         cls.y = y
         cls.width = width
         cls.line_height = line_height
         cls.font = font
+        cls.blip_speed = blip_speed
         return super().__init_subclass__()
-        
+    
+    
+    @cached_property
+    def _parsed(self):
+        return Command.parse_commands(self.input)
+    
+    
     @cached_property
     def text(self):
         def split_lines(text: str) -> str:
@@ -41,12 +49,12 @@ class Textbox(Component):
                     return text[:saved or i] + '\n' + split_lines(text[(saved or i) + 1:])
             return text
         
-        return split_lines(re.sub(COMMAND, '§', self.input))
+        return split_lines(self._parsed[0])
     
     
     @cached_property
-    def commands(self) -> tuple[str, ...]:
-        return tuple(x[2:-1] for x in re.findall(COMMAND, self.input)) # TODO: make these commands
+    def commands(self) -> tuple[Command, ...]:
+        return self._parsed[1]
     
     
     def display(self, *, max_time: float = float('inf')):
@@ -55,20 +63,20 @@ class Textbox(Component):
         c = 0
         delay = 0.03
         audio: list[tuple[float, str]] = []
-        blip = -999
+        blip = -self.blip_speed
         for char in self.text:
             if time >= max_time:
                 break
             
-            if char == '§':
+            if char == Command.SIG:
                 command = self.commands[c]
-                if command.startswith('ts'):
-                    delay = float(command[2:]) / 1000
-                elif command.startswith('p'):
-                    time += float(command[1:]) / 1000
-                elif command.startswith('bgs'):
-                    audio.append((time, command[3:].strip() + '.wav'))
-
+                if isinstance(command, TextSpeedCommand):
+                    delay = command.data
+                elif isinstance(command, PauseCommand):
+                    time += command.data
+                elif isinstance(command, BackgroundSoundCommand):
+                    audio.append((time, command.data))
+                
                 c += 1
                 continue
             
@@ -80,10 +88,10 @@ class Textbox(Component):
                     if not text == '--':
                         time += 0.1
             else:
-                time += delay
-                if time > blip + 0.064:
-                    blip = max(time - delay, blip + 0.064)
+                if time + delay > blip + self.blip_speed:
+                    blip = max(time, blip + self.blip_speed)
                     audio.append((blip, 'blip.wav'))
+                time += delay
             
             text += char
         

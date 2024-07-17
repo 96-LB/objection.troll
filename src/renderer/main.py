@@ -1,7 +1,7 @@
 from video.components.gif import Gif
 from video.components.scene import Scene
 from video.components.frame import Frame
-from video.components.textbox import TrilogyTextbox
+from video.components.textboxes import TrilogyTextbox
 
 scene = Scene(
     children=(
@@ -29,4 +29,4 @@ scene = Scene(
 
 from video.video import render_scene
 
-render_scene(scene, 'output', 'temp', 30)
+render_scene(scene, 'output', 'temp', 10)

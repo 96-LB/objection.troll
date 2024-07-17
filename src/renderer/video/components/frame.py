@@ -4,7 +4,7 @@ from ..context import Context
 from .character import Character
 from .component import Component
 from .gif import Gif
-from .textbox import Textbox
+from .textboxes import Textbox
 from util.pod import PList
 
 
