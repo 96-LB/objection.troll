@@ -5,7 +5,7 @@ from functools import cached_property
 from ....context import Context
 from ...component import Component
 
-from typing import ClassVar, Self
+from typing import ClassVar, Generator, Self
 
 
 class Command(Component, ABC):
@@ -58,3 +58,13 @@ class Command(Component, ABC):
     @staticmethod
     def clean(text: str):
         return re.sub(Command.REGEX, '', text)
+    
+    
+    @staticmethod
+    def text_indices(text: str) -> Generator[int, None, None]:
+        i = 0
+        matches = re.finditer(Command.REGEX, text)
+        for match in matches:
+            yield from range(i, match.start())
+            i = match.end()
+        yield from range(i, len(text))

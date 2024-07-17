@@ -33,13 +33,13 @@ class Textbox(Container[Line]):
     def from_input(cls, input: str):
         def split_lines(text: str) -> tuple[str, ...]:
             saved = 0
-            for i in range(len(text)):
+            for i in Command.text_indices(text):
                 if text[i] == '\n':
                     return (text[:i + 1],) + split_lines(text[i + 1:])
                 elif text[i].isspace():
-                    if cls.font.getlength(Command.clean(text[:i])) > cls.width:
-                        return (text[:saved or i],) + split_lines(text[(saved or i) + 1:])
                     saved = i
+                if cls.font.getlength(Command.clean(text[:i + 1])) > cls.width:
+                    return (text[:saved or i],) + split_lines(text[(saved or i) + 1:])
             return (text,)
         
         children = []
