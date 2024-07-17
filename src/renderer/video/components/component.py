@@ -8,7 +8,7 @@ from util.pod import Pod
 class Component(Pod, ABC):
     @cached_property
     @abstractmethod
-    def size(self) -> tuple[int, int]:
+    def size(self) -> tuple[float, float]:
         ...
     
     @cached_property

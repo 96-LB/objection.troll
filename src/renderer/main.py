@@ -10,7 +10,7 @@ scene = Scene(
             height=1080,
             background=Gif.open('image2.gif'),
             foreground=Gif.open('image2.webp'),
-            textbox=TrilogyTextbox(input='Text speed modifications.[/ts100] Typing really slowly... [/ts10] Typing really quickly! Really really quickly! [/ts30]The default speed is 30.'),
+            textbox=TrilogyTextbox.from_input('Text speed modifications.[/ts100] Typing really slowly... [/ts10] Typing really quickly! Really really quickly! [/ts30]The default speed is 30.'),
             character=(),
             active_character=0,
         ),
@@ -19,7 +19,7 @@ scene = Scene(
             height=1080,
             background=Gif.open('image.gif'),
             foreground=Gif.open('image.gif'),
-            textbox=TrilogyTextbox(input='There are two frames now! Pausing for 200ms,[/p200][/bgs whack] now pausing for 500ms,[/p500][/bgsrealization] and finally pausing for 963ms.[/p963][/bgsexplosion ] Yippee!!!'),
+            textbox=TrilogyTextbox.from_input('There are two frames now! Pausing for 200ms,[/p200][/bgs whack] now pausing for 500ms,[/p500][/bgsrealization] and finally pausing for 963ms.[/p963][/bgsexplosion ] Yippee!!!'),
             character=(),
             active_character=0,
         ),
@@ -29,4 +29,4 @@ scene = Scene(
 
 from video.video import render_scene
 
-render_scene(scene, 'output', 'temp', 10)
+render_scene(scene, 'output', 'temp', 60)

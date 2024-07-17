@@ -8,7 +8,7 @@ from .sequence import Sequence
 class Scene(Sequence[Frame]):
     
     def render_frame(self, time: float):
-        ctx = Context.new(*self.size).but(time=time)
+        ctx = Context.new(ceil(self.size[0]), ceil(self.size[1])).but(time=time)
         self.draw(ctx)
         return ctx.image
     
