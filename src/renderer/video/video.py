@@ -1,4 +1,5 @@
 import os, shutil
+from functools import cache
 from time import time
 
 from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
@@ -7,6 +8,8 @@ from moviepy.audio.AudioClip import CompositeAudioClip
 
 from video.components.scene import Scene
 
+
+SAMPLE_RATE = 44100 # 48000 causes weird artifacts for some reason
 
 def get_image_clip(scene: Scene, path: str, fps: float, *, verbose: bool = True):
     if os.path.exists(path):
@@ -27,20 +30,19 @@ def get_image_clip(scene: Scene, path: str, fps: float, *, verbose: bool = True)
 
 
 def get_audio_clip(scene: Scene):
-    audio = []
-    for time, sound in scene.audio:
-        file = sound # TODO: probably subpath this
+    @cache
+    def get_audio(file: str):
         if os.path.isfile(file):
-            clip = AudioFileClip(file).set_start(time)
-            audio.append(clip)
+            return AudioFileClip(file)
+        raise FileNotFoundError(f'File not found: {file}')
     
-    return CompositeAudioClip(audio) if audio else None
+    return CompositeAudioClip([get_audio(x).set_start(round(t * SAMPLE_RATE) / SAMPLE_RATE) for t, x in scene.audio]) if scene.audio else None
 
 
 def make_video(image_clip: ImageSequenceClip, audio_clip: CompositeAudioClip | None, output: str):
     if audio_clip:
         image_clip.audio = audio_clip.subclip(0, image_clip.duration)
-    image_clip.write_videofile(output)
+    image_clip.write_videofile(output, audio_fps=SAMPLE_RATE)
 
 
 def render_scene(scene: Scene, output: str, temp_path: str, fps: float, *, verbose: bool = True):
