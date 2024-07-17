@@ -48,7 +48,8 @@ class Textbox(Container[Line]):
             text_speed=0.03, # TODO: make a constant for text speed
             color=(255, 255, 255),
             font=cls.font,
-            height=cls.line_height
+            height=cls.line_height,
+            last_blip=float('inf') # so the first char blips
         )
         lines = split_lines(input)
         for line in lines:

@@ -4,7 +4,7 @@ from PIL import ImageFont
 
 from ..container import Container
 from .commands import ColorCommand, Command, TextSpeedCommand
-from .text import Char
+from .char import Char
 
 from typing import Self
 
@@ -15,7 +15,7 @@ class Line(Container[Char | Command]):
     color: tuple[int, int, int]
     font: ImageFont.FreeTypeFont
     height: int
-    
+    last_blip: float
     
     @cached_property
     def size(self):
@@ -25,60 +25,62 @@ class Line(Container[Char | Command]):
     @classmethod
     def from_input(cls, input: str, prev: Self):
         children: list[Char | Command] = []
-        text, commands = Command.parse(input)
+        text, commands = Command.parse(input + ' ')
         curr, next = '', text.replace(Command.SIG, '')
-        blip = 0 # time since last blip
-        c = 0
+        index = 0
         
-        text_speed = prev.text_speed
-        color = prev.color
-        
+        child = Char(
+            char='',
+            next='',
+            text_speed=prev.text_speed,
+            pause=0,
+            color=prev.color,
+            font=prev.font,
+            last_blip=prev.last_blip, # so the first char blips
+        )
         for i in range(len(text)):
             if text[i] == Command.SIG:
-                command = commands[c]
-                children.append(command)
-                if isinstance(command, TextSpeedCommand):
-                    text_speed = command.speed
-                elif isinstance(command, ColorCommand):
-                    color = command.color
-                c += 1
+                command = commands[index]
+                match command:
+                    case TextSpeedCommand(speed):
+                        child = child.but(text_speed=speed)
+                    case ColorCommand(color):
+                        child = child.but(color=color)
+                    case _:
+                        children.append(command)
+                index += 1
             else:
                 char = next[0]
                 
                 # calculate text delay
-                delay = text_speed
+                pause = 0
                 if char.isspace():
                     if any(curr.endswith(c) for c in ('.', '!', '?', '—', ';')):
                         if not any(curr.lower().endswith(c) for c in ('mr.', 'mrs.', 'ms.', 'dr.', 'prof.')):
-                            delay += 0.25
+                            pause = 0.25
                     elif any(curr.endswith(c) for c in (',', '-', ':')):
                         if not text == '--':
-                            delay += 0.1
+                            pause = 0.1
+                child = child.but(pause=pause)
                 
-                # update text buffers
-                curr += char
-                next = next[1:]
                 
                 # build text object
-                child = Char(
-                    char=curr[-1],
-                    next=next[0] if next else '',
-                    delay=delay,
-                    color=color,
-                    font=prev.font,
-                    last_blip=blip
-                )
+                child = Char.from_input(char, child)
+                children.append(child)
                 
                 # update blip time
                 if child.audio:
-                    blip = child.time - child.audio[0][0] # time since child's blip
+                    child = child.but(last_blip=child.time - child.audio[0][0]) # time since child's blip
                 else:
-                    blip += child.time # no blip occurred
+                    child = child.plus(last_blip=child.time)
                 
-                children.append(child)
+                # update text buffer
+                curr += char
+                next = next[1:]
         
         return prev.but(
             children=tuple(children),
-            text_speed=text_speed,
-            color=color
+            text_speed=child.text_speed,
+            color=child.color,
+            last_blip=child.last_blip
         )

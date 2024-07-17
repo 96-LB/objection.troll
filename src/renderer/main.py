@@ -12,36 +12,18 @@ scene = Scene(
         Frame(
             width=1920,
             height=1080,
-            background=Gif.open('image2.gif'),
-            foreground=Gif.open('image2.webp'),
-            textbox=TrilogyTextbox.from_input('Apollo Justice, I [/bgs explosion][/ts150][/cr]hate[/cw][/ts35] you![/p500]'),
+            background=Gif.open('image.gif'),
+            foreground=Gif.open('image.gif'),
+            textbox=TrilogyTextbox.from_input('[/bgswhack][/ts2]Nooooooooooooooooo! [/ts20][/bgs realization][/cg]Why do you hate me?[/cw] Is it because[/p500] ...wait, never mind.'),
             character=(),
             active_character=0,
         ),
-        Frame(
-            width=1920,
-            height=1080,
-            background=Gif.open('image.gif'),
-            foreground=Gif.open('image.gif'),
-            textbox=TrilogyTextbox.from_input('[/bgswhack][/ts20]Nooooooooooooooooo! [/ts30][/bgs realization][/cg]Why do you hate me?[/cw] Is it because[/p500] ...wait, never mind. I put you in jail. Right.'),
-            character=(),
-            active_character=0,
-        ),
-        Frame(
-            width=1920,
-            height=1080,
-            background=Gif.open('image.gif'),
-            foreground=Gif.open('image.gif'),
-            textbox=TrilogyTextbox.from_input('[/ts64]aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'),
-            character=(),
-            active_character=0,
-        )
     ),
 )
 
 
 start = time()
-render_scene(scene, 'output', 'temp', 5)
+render_scene(scene, 'output', 'temp', 30)
 out = time() - start
 
 print(f'Finished in {out:.2f}s')

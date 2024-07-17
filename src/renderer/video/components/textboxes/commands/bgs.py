@@ -8,7 +8,7 @@ class BackgroundSoundCommand(Command, prefix='bgs'):
     
     @classmethod
     def from_input(cls, input: str):
-        return cls(input + '.wav') # TODO: we probably want to support different types of audio files
+        return cls(sound=input + '.wav') # TODO: we probably want to support different types of audio files
     
     
     @cached_property
