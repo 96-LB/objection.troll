@@ -3,7 +3,7 @@ from functools import cached_property
 from PIL import ImageFont
 
 from ..container import Container
-from .commands import Command, TextSpeedCommand
+from .commands import ColorCommand, Command, TextSpeedCommand
 from .text import Char
 
 from typing import Self
@@ -38,7 +38,9 @@ class Line(Container[Char | Command]):
                 command = commands[c]
                 children.append(command)
                 if isinstance(command, TextSpeedCommand):
-                    text_speed = command.data
+                    text_speed = command.speed
+                elif isinstance(command, ColorCommand):
+                    color = command.color
                 c += 1
             else:
                 char = next[0]

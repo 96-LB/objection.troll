@@ -2,7 +2,7 @@ from .command import Command
 
 
 class TextSpeedCommand(Command, prefix='ts'):
-    data: float
+    speed: float
     
     @classmethod
     def from_input(cls, input: str):

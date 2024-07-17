@@ -1,4 +1,5 @@
 import os, shutil
+from time import time
 
 from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
 from moviepy.audio.io.AudioFileClip import AudioFileClip
@@ -12,10 +13,15 @@ def get_image_clip(scene: Scene, path: str, fps: float, *, verbose: bool = True)
         shutil.rmtree(path)
     os.mkdir(path)
     
+    start = time()
+    i = -1
     for i, frame in enumerate(scene.render_frames(fps)):
         frame.save(f'{path}/{i:05d}.png')
         if verbose:
             print(i)
+    out = time() - start
+    if verbose:
+        print(f'Finished in {out:.2f}s ({(i + 1)/out:.2f}fps)')
     
     return ImageSequenceClip(path, fps)
 

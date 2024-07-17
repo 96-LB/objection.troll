@@ -1,7 +1,11 @@
+from time import time
+
 from video.components.gif import Gif
 from video.components.scene import Scene
 from video.components.frame import Frame
 from video.components.textboxes import TrilogyTextbox
+from video.video import render_scene
+
 
 scene = Scene(
     children=(
@@ -10,7 +14,7 @@ scene = Scene(
             height=1080,
             background=Gif.open('image2.gif'),
             foreground=Gif.open('image2.webp'),
-            textbox=TrilogyTextbox.from_input('Text speed modifications.[/ts100] Typing really slowly... [/ts10] Typing really quickly! Really really quickly! [/ts30]The default speed is 30.'),
+            textbox=TrilogyTextbox.from_input('Apollo Justice, I [/bgs explosion][/ts150][/cr]hate[/cw][/ts35] you![/p500]'),
             character=(),
             active_character=0,
         ),
@@ -19,7 +23,7 @@ scene = Scene(
             height=1080,
             background=Gif.open('image.gif'),
             foreground=Gif.open('image.gif'),
-            textbox=TrilogyTextbox.from_input('There are two frames now! Pausing for 200ms,[/p200][/bgs whack] now pausing for 500ms,[/p500][/bgsrealization] and finally pausing for 963ms.[/p963][/bgsexplosion ] Yippee!!!'),
+            textbox=TrilogyTextbox.from_input('[/bgswhack][/ts20]Nooooooooooooooooo! [/ts30][/bgs realization][/cg]Why do you hate me?[/cw] Is it because[/p500] ...wait, never mind. I put you in jail. Right.'),
             character=(),
             active_character=0,
         ),
@@ -27,6 +31,8 @@ scene = Scene(
 )
 
 
-from video.video import render_scene
-
+start = time()
 render_scene(scene, 'output', 'temp', 60)
+out = time() - start
+
+print(f'Finished in {out:.2f}s')
