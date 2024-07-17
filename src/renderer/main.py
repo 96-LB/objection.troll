@@ -19,7 +19,7 @@ scene = Scene(
             height=1080,
             background=Gif.open('image.gif'),
             foreground=Gif.open('image.gif'),
-            textbox=TrilogyTextbox(input='There are two frames now! Pausing for 200ms,[/p200] now pausing for 500ms,[/p500] and finally pausing for 963ms.[/p963] Yippee!!!'),
+            textbox=TrilogyTextbox(input='There are two frames now! Pausing for 200ms,[/p200][/bgs whack] now pausing for 500ms,[/p500][/bgsrealization] and finally pausing for 963ms.[/p963][/bgsexplosion ] Yippee!!!'),
             character=(),
             active_character=0,
         ),

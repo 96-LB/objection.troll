@@ -66,8 +66,9 @@ class Textbox(Component):
                     delay = float(command[2:]) / 1000
                 elif command.startswith('p'):
                     time += float(command[1:]) / 1000
+                elif command.startswith('bgs'):
+                    audio.append((time, command[3:].strip() + '.wav'))
 
-                
                 c += 1
                 continue
             
