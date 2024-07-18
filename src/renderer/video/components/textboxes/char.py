@@ -9,26 +9,27 @@ from typing import Self
 
 
 class Char(Component):
+    # transient attributes
     char: str
     next: str # used for kerning
-    
-    text_speed: float
+    sound: str
     pause: float
+    
+    # persistent attributes
+    text_speed: float
     color: tuple[int, int, int]
     font: ImageFont.FreeTypeFont
     last_blip: float
-        
+    
     
     @classmethod
     def from_input(cls, input: str, prev: Self):
-        return cls(
-            char=input[0],
+        return prev.but(
+            char=input[0] if input else '',
             next=input[1] if len(input) > 1 else '',
-            text_speed=prev.text_speed,
-            pause=prev.pause,
-            color=prev.color,
-            font=prev.font,
-            last_blip=prev.last_blip
+            sound='',
+            pause=0,
+            last_blip=prev.time - prev.blip if prev.blip >= 0 else prev.last_blip + prev.time
         )
     
     
@@ -44,10 +45,20 @@ class Char(Component):
     
     @cached_property
     def audio(self):
-        BLIP_SPEED = 0.064 # TODO: make a constant for blip speed
-        if not self.char.isspace() and BLIP_SPEED - self.last_blip <= self.time:
-            return ((max(0, BLIP_SPEED - self.last_blip), 'blip.wav'),)
-        return ()
+        audio = ()
+        if self.sound:
+            audio += ((self.time, self.sound),)
+        if self.blip >= 0:
+            audio += ((self.blip, 'blip.wav'),)
+        return audio
+    
+    
+    @cached_property
+    def blip(self):
+        BLIP_SPEED = 0.064
+        if self.char.strip() and BLIP_SPEED - self.last_blip <= self.time:
+            return max(0, BLIP_SPEED - self.last_blip)
+        return -self.last_blip
     
     
     def draw(self, ctx: Context):

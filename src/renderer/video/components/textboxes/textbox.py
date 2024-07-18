@@ -49,7 +49,7 @@ class Textbox(Container[Line]):
             color=(255, 255, 255),
             font=cls.font,
             height=cls.line_height,
-            last_blip=float('inf'), # so the first char blips
+            last_blip=0,
         )
         lines = split_lines(input)
         for line in lines:

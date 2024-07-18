@@ -71,3 +71,9 @@ class Gif(Component):
     @cache
     def open(cls, filename: str):
         return cls(Image.open(filename))
+    
+    
+    @classmethod
+    @cache
+    def empty(cls):
+        return cls(Image.new('RGBA', (0, 0)))

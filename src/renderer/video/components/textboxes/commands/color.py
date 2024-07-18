@@ -1,3 +1,4 @@
+from ..char import Char
 from .command import Command
 
 
@@ -6,14 +7,15 @@ class ColorCommand(Command, prefix='c'):
     
     @classmethod
     def from_input(cls, input: str):
-        match input:
-            case 'w':
-                return cls((255, 255, 255))
-            case 'r':
-                return cls((255, 0, 0))
-            case 'g':
-                return cls((0, 255, 0))
-            case 'b':
-                return cls((0, 0, 255))
-            case _:
-                raise ValueError(f'Invalid color: {input}')
+        try:
+            return cls({
+                'w': (255, 255, 255),
+                'r': (255, 0, 0),
+                'g': (0, 255, 0),
+                'b': (0, 0, 255),
+            }[input])
+        except KeyError:
+            raise ValueError(f'Invalid color: {input}')
+    
+    def get_char(self, prev: Char):
+        return super().get_char(prev).but(color=self.color)

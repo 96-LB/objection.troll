@@ -1,5 +1,4 @@
-from functools import cached_property
-
+from ..char import Char
 from .command import Command
 
 
@@ -10,7 +9,5 @@ class PauseCommand(Command, prefix='p'):
     def from_input(cls, input: str):
         return cls(float(input) / 1000)
     
-    
-    @cached_property
-    def time(self):
-        return self.pause
+    def get_char(self, prev: Char):
+        return super().get_char(prev).but(pause=self.pause)

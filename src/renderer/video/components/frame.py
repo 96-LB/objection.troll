@@ -6,8 +6,6 @@ from .character import Character
 from .component import Component
 from .gif import Gif
 from .textboxes import Textbox
-from .textboxes.char import Char
-from .textboxes.commands.pause import PauseCommand
 from util.pod import PList
 
 
@@ -57,14 +55,10 @@ class Frame(Component):
             if time < 0:
                 break
             for char in line.children:
-                if isinstance(char, (Char, PauseCommand)) and char.pause:
-                    if talking:
-                        talking = False
-                        talk = 0
-                elif not talking:
-                    talking = True
+                if bool(char.pause) == talking:
+                    talking = not talking
                     talk = 0
-                
+
                 time -= char.time
                 talk += char.time
                 if time < 0:

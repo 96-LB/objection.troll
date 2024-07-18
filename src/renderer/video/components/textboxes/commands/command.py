@@ -1,14 +1,14 @@
 import re
 from abc import ABC, abstractmethod
-from functools import cached_property
 
-from ....context import Context
-from ...component import Component
+from util.pod import Pod
 
 from typing import ClassVar, Generator, Self
 
+from video.components.textboxes.char import Char
 
-class Command(Component, ABC):
+
+class Command(Pod, ABC):
     REGEX: ClassVar[re.Pattern[str]] = re.compile(r'\[/([^\]]+)\]')
     SIG: ClassVar[str] = '§'
     COMMANDS: ClassVar[dict[str, type[Self]]] = {}
@@ -19,32 +19,16 @@ class Command(Component, ABC):
         return super().__init_subclass__()
     
     
-    @cached_property
-    def size(self):
-        return 0, 0
-    
-    
-    @cached_property
-    def time(self):
-        return 0.
-    
-    
-    @cached_property
-    def audio(self) -> tuple[tuple[float, str], ...]:
-        return ()
-    
-    
-    def draw(self, ctx: Context):
-        pass
-    
-    
     @classmethod
     @abstractmethod
     def from_input(cls, input: str) -> 'Command':
         for prefix, command in Command.COMMANDS.items():
             if input.startswith(prefix):
                 return command.from_input(input[len(prefix):].strip())
-        raise ValueError(f'Invalid command: {input}')
+    
+    
+    def get_char(self, prev: Char):
+        return Char.from_input('', prev)
     
     
     @staticmethod

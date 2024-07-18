@@ -26,11 +26,27 @@ scene = Scene(
             ,),
             active_index=0,
         ),
+        Frame(
+            width=960,
+            height=640,
+            background=Gif.open('img/bg.jpg'),
+            foreground=Gif.open('img/desk.png'),
+            textbox=TrilogyTextbox.from_input('At least I have [/cg][/bgsrealization]fancy colors[/cw] to keep me [/cr]c[/cg]o[/cb]m[/cw]p[/cr]a[/cg]n[/cb]y[/cw]!'),
+            characters=(
+                Character(
+                    pre=Gif.empty(),
+                    idle=Gif.open('img/Stand.gif'),
+                    talk=Gif.open('img/Stand_talk.gif'),
+                    bgs=''
+                )
+            ,),
+            active_index=0,
+        ),
     ),
 )
 
 start = time()
-render_scene(scene, 'output', 'temp', 60)
+render_scene(scene, 'output', 'temp', 10)
 out = time() - start
 
 print(f'Finished in {out:.2f}s')
