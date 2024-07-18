@@ -6,4 +6,4 @@ from .pause import PauseCommand
 from .textspeed import TextSpeedCommand
 
 
-__all__ = ['BackgroundSoundCommand', 'ColorCommand', 'Command', 'FlashCommand', 'PauseCommand', 'TextSpeedCommand']
+__all__ = ['BackgroundSoundCommand', 'ColorCommand', 'Command', 'FlashCommand', 'PauseCommand', 'TextSpeedCommand']  # TODO: ERIC: import ShakeCommand

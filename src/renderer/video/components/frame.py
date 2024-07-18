@@ -48,6 +48,7 @@ class Frame(Component):
             return
         
         # TODO: move this calculation to the textbox
+        # TODO: if the frame is only punctuation or (thinking), don't talk
         # determine how long the character's been talking/idling
         time = ctx.time - self.character.time
         talking = True
@@ -67,6 +68,8 @@ class Frame(Component):
                     break
         talk += max(0, time)
         
+        # TODO: ERIC: if there are shake commands, move ctx.x and ctx.y
+        
         self.background.draw(ctx)
         for i, character in enumerate(self.characters):
             if i == self.active_index:
@@ -77,6 +80,9 @@ class Frame(Component):
             else:
                 character.draw(ctx)
         self.foreground.draw(ctx)
+        
+        # TODO: ERIC: undo changes because the textbox doesn't shake
+        
         self.textbox.draw(ctx.plus(time=-self.character.time))
         
         for effect in self.effects:
