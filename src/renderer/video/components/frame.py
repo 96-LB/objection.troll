@@ -1,12 +1,11 @@
 from functools import cached_property
 
-
-from ..context import Context
 from .character import Character
 from .component import Component
 from .gif import Gif
 from .textboxes import Textbox
 from util.pod import PList
+from video.context import Context
 
 
 class Frame(Component):
@@ -38,8 +37,8 @@ class Frame(Component):
     
     
     @cached_property
-    def audio(self) -> tuple[tuple[float, str], ...]:
-        return self.character.audio + tuple((t + self.character.time, a) for t, a in self.textbox.audio)
+    def effects(self):
+        return self.character.effects + tuple(effect.plus_time(self.character.time) for effect in self.textbox.effects)
     
     
     def draw(self, ctx: Context):

@@ -5,6 +5,7 @@ from video.components.gif import Gif
 from video.components.frame import Frame
 from video.components.scene import Scene
 from video.components.textboxes import TrilogyTextbox
+from video.effects import AudioEffect
 from video.video import render_scene
 
 
@@ -15,13 +16,13 @@ scene = Scene(
             height=640,
             background=Gif.open('img/bg.jpg'),
             foreground=Gif.open('img/desk.png'),
-            textbox=TrilogyTextbox.from_input('This is bad. Really, really bad.[/p2000] Like really really really really really really really really bad.'),
+            textbox=TrilogyTextbox.from_input('This is bad. Really, really bad.[/p1250] Like really really really really really really really really bad.'),
             characters=(
                 Character(
                     pre=Gif.open('img/Damage.gif'),
                     idle=Gif.open('img/Cornered.gif'),
                     talk=Gif.open('img/Cornered_talk.gif'),
-                    bgs='explosion.wav',
+                    fx=(AudioEffect(0, 'explosion.wav'),)
                 )
             ,),
             active_index=0,
@@ -37,7 +38,7 @@ scene = Scene(
                     pre=Gif.empty(),
                     idle=Gif.open('img/Stand.gif'),
                     talk=Gif.open('img/Stand_talk.gif'),
-                    bgs=''
+                    fx=()
                 )
             ,),
             active_index=0,

@@ -2,9 +2,9 @@ from functools import cached_property
 
 from PIL import ImageFont
 
-from ..container import Container
-from .commands import Command
 from .char import Char
+from .commands import Command
+from video.components import Container
 
 from typing import Self
 

@@ -2,10 +2,10 @@ from abc import abstractmethod
 
 from PIL import ImageFont
 
-from ...context import Context
-from ..container import Container
 from .commands import Command
 from .line import Line
+from video.components import Container
+from video.context import Context
 
 from typing import ClassVar
 
@@ -16,16 +16,14 @@ class Textbox(Container[Line]):
     width: ClassVar[int]
     line_height: ClassVar[int]
     font: ClassVar[ImageFont.FreeTypeFont]
-    blip_speed: ClassVar[float]
-        
     
-    def __init_subclass__(cls, x: int, y: int, width: int, line_height: int, font: ImageFont.FreeTypeFont, blip_speed: float):
+    
+    def __init_subclass__(cls, x: int, y: int, width: int, line_height: int, font: ImageFont.FreeTypeFont):
         cls.x = x
         cls.y = y
         cls.width = width
         cls.line_height = line_height
         cls.font = font
-        cls.blip_speed = blip_speed
         return super().__init_subclass__()
     
     

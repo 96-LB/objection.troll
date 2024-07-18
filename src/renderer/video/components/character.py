@@ -1,15 +1,17 @@
 from functools import cached_property
 
-from ..context import Context
 from .component import Component
 from .gif import Gif
+from util.pod import PList
+from video.context import Context
+from video.effects import Effect
 
 
 class Character(Component):
     pre: Gif
     idle: Gif
     talk: Gif
-    bgs: str
+    fx: PList[Effect]
     
     @cached_property
     def size(self):
@@ -22,8 +24,8 @@ class Character(Component):
     
     
     @cached_property
-    def audio(self):
-        return ((0, self.bgs),) if self.bgs else ()
+    def effects(self):
+        return self.fx
     
     
     def draw(self, ctx: Context, talking: bool = False):

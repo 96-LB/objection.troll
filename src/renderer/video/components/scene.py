@@ -1,8 +1,8 @@
 from math import ceil
 
-from ..context import Context
 from .frame import Frame
 from .sequence import Sequence
+from video.context import Context
 
 
 class Scene(Sequence[Frame]):

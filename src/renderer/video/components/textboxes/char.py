@@ -2,8 +2,9 @@ from functools import cached_property
 
 from PIL import ImageFont
 
-from ...context import Context
-from ..component import Component
+from video.components import Component
+from video.context import Context
+from video.effects import AudioEffect
 
 from typing import Self
 
@@ -44,13 +45,13 @@ class Char(Component):
     
     
     @cached_property
-    def audio(self):
-        audio = ()
+    def effects(self):
+        fx = ()
         if self.sound:
-            audio += ((self.time, self.sound),)
+            fx += (AudioEffect(self.time, self.sound),)
         if self.blip >= 0:
-            audio += ((self.blip, 'blip.wav'),)
-        return audio
+            fx += (AudioEffect(self.blip, 'blip.wav'),)
+        return fx
     
     
     @cached_property

@@ -1,8 +1,9 @@
 from functools import cached_property
 
-from ..context import Context
 from .component import Component
 from util.pod import PList
+from video.context import Context
+from video.effects import Effect
 
 
 class Container[T: Component](Component):
@@ -23,14 +24,14 @@ class Container[T: Component](Component):
     
     
     @cached_property
-    def audio(self) -> tuple[tuple[float, str], ...]:
-        audio = []
+    def effects(self):
+        fx: list[Effect] = []
         time = 0
         for child in self.children:
-            for t, a in child.audio:
-                audio.append((time + t, a))
+            for effect in child.effects:
+                fx.append(effect.plus_time(time))
             time += child.time
-        return tuple(audio)
+        return tuple(fx)
     
     
     def draw(self, ctx: Context):

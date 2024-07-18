@@ -1,12 +1,12 @@
+from .plist import PList
 from .pod import Pod
 
 from typing import Mapping
 from lalatypes import T, T2
 
 
-
 class PDict[K, V](Pod):
-    items: tuple[tuple[K, V], ...] = ()
+    items: PList[tuple[K, V]] = ()
     
     
     @staticmethod

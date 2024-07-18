@@ -1,8 +1,9 @@
 from abc import ABC, abstractmethod
 from functools import cached_property
 
-from ..context import Context
-from util.pod import Pod
+from util.pod import PList, Pod
+from video.context import Context
+from video.effects import Effect
 
 
 class Component(Pod, ABC):
@@ -18,7 +19,7 @@ class Component(Pod, ABC):
     
     @cached_property
     @abstractmethod
-    def audio(self) -> tuple[tuple[float, str], ...]:
+    def effects(self) -> PList[Effect]:
         ...
     
     @abstractmethod

@@ -2,10 +2,9 @@ import re
 from abc import ABC, abstractmethod
 
 from util.pod import Pod
+from ..char import Char
 
 from typing import ClassVar, Generator, Self
-
-from video.components.textboxes.char import Char
 
 
 class Command(Pod, ABC):
@@ -25,6 +24,7 @@ class Command(Pod, ABC):
         for prefix, command in Command.COMMANDS.items():
             if input.startswith(prefix):
                 return command.from_input(input[len(prefix):].strip())
+        raise ValueError(f'Unknown command: {input}')
     
     
     def get_char(self, prev: Char):

@@ -4,13 +4,12 @@ from PIL import Image
 from PIL.GifImagePlugin import GifImageFile
 from PIL.WebPImagePlugin import WebPImageFile
 
-from ..context import Context
 from .component import Component
+from video.context import Context
 
 
 class Gif(Component):
     _image: Image.Image
-    
     
     @cached_property
     def size(self):
@@ -23,7 +22,7 @@ class Gif(Component):
     
     
     @cached_property
-    def audio(self):
+    def effects(self):
         return ()
     
     
@@ -38,11 +37,10 @@ class Gif(Component):
             self._image.load()
             try:
                 times.append(float(self._image.info['duration']) / 1000)
-            except (KeyError, ValueError) as e:
+            except (KeyError, ValueError) as e: # TODO: import catch from lalaverse
                 print(f'Error: {e}')
                 times.append(0)
         
-
         return tuple(times)
     
     
