@@ -47,7 +47,7 @@ scene = Scene(
 )
 
 start = time()
-render_scene(scene, 'output', 'temp', 60)
+render_scene(scene, 'output', 'temp', 60, skip_img=True)
 out = time() - start
 
 print(f'Finished in {out:.2f}s')
