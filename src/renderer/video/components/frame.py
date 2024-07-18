@@ -1,3 +1,4 @@
+import math
 from functools import cached_property
 
 from .character import Character
@@ -6,6 +7,7 @@ from .gif import Gif
 from .textboxes import Textbox
 from util.pod import PList
 from video.context import Context
+from video.effects import FlashEffect
 
 
 class Frame(Component):
@@ -76,3 +78,10 @@ class Frame(Component):
                 character.draw(ctx)
         self.foreground.draw(ctx)
         self.textbox.draw(ctx.plus(time=-self.character.time))
+        
+        for effect in self.effects:
+            if isinstance(effect, FlashEffect):
+                if effect.time <= ctx.time < effect.time + effect.length:
+                    t = 1 - (ctx.time - effect.time) / effect.length
+                    a = int(math.sin(t**2 * math.pi/2) * 255) # calculate alpha # TODO: this formula is kinda bad
+                    ctx.rectangle(0, 0, self.width, self.height, (255, 255, 255, a))

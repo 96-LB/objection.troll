@@ -39,3 +39,8 @@ class Context(Pod):
     @cached_property
     def pos(self):
         return self.x, self.y
+    
+    
+    def rectangle(self, x1: int, y1: int, x2: int, y2: int, rgba: tuple[int, int, int, int]):
+        image = Image.new('RGBA', (x2 - x1, y2 - y1), rgba)
+        self.image.alpha_composite(image, (x1, y1))

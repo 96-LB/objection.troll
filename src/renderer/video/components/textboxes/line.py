@@ -31,7 +31,7 @@ class Line(Container[Char]):
             char='',
             next='',
             pause=float('inf'), # so the first char blips
-            sound='',
+            fx=(),
             text_speed=prev.text_speed,
             color=prev.color,
             font=prev.font,

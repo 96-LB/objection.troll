@@ -5,7 +5,7 @@ from video.components.gif import Gif
 from video.components.frame import Frame
 from video.components.scene import Scene
 from video.components.textboxes import TrilogyTextbox
-from video.effects import AudioEffect
+from video.effects import AudioEffect, FlashEffect
 from video.video import render_scene
 
 
@@ -22,7 +22,7 @@ scene = Scene(
                     pre=Gif.open('img/Damage.gif'),
                     idle=Gif.open('img/Cornered.gif'),
                     talk=Gif.open('img/Cornered_talk.gif'),
-                    fx=(AudioEffect(0, 'explosion.wav'),)
+                    fx=(AudioEffect(0, 'explosion.wav'), FlashEffect(0, 0.1))
                 )
             ,),
             active_index=0,
@@ -32,7 +32,7 @@ scene = Scene(
             height=640,
             background=Gif.open('img/bg.jpg'),
             foreground=Gif.open('img/desk.png'),
-            textbox=TrilogyTextbox.from_input('At least I have [/cg][/bgsrealization]fancy colors[/cw] to keep me [/cr]c[/cg]o[/cb]m[/cw]p[/cr]a[/cg]n[/cb]y[/cw]!'),
+            textbox=TrilogyTextbox.from_input('At least I have [/cg][/fl][/bgsrealization]fancy colors[/cw] to keep me [/cr]c[/cg]o[/cb]m[/cw]p[/cr]a[/cg]n[/cb]y[/cw]!'),
             characters=(
                 Character(
                     pre=Gif.empty(),
@@ -47,7 +47,7 @@ scene = Scene(
 )
 
 start = time()
-render_scene(scene, 'output', 'temp', 10)
+render_scene(scene, 'output', 'temp', 60)
 out = time() - start
 
 print(f'Finished in {out:.2f}s')

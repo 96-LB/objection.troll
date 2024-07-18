@@ -2,9 +2,10 @@ from functools import cached_property
 
 from PIL import ImageFont
 
+from util.pod import PList
 from video.components import Component
 from video.context import Context
-from video.effects import AudioEffect
+from video.effects import AudioEffect, Effect
 
 from typing import Self
 
@@ -13,7 +14,7 @@ class Char(Component):
     # transient attributes
     char: str
     next: str # used for kerning
-    sound: str
+    fx: PList[Effect]
     pause: float
     
     # persistent attributes
@@ -28,7 +29,7 @@ class Char(Component):
         return prev.but(
             char=input[0] if input else '',
             next=input[1] if len(input) > 1 else '',
-            sound='',
+            fx=(),
             pause=0,
             last_blip=prev.time - prev.blip if prev.blip >= 0 else prev.last_blip + prev.time
         )
@@ -46,9 +47,7 @@ class Char(Component):
     
     @cached_property
     def effects(self):
-        fx = ()
-        if self.sound:
-            fx += (AudioEffect(self.time, self.sound),)
+        fx = self.fx
         if self.blip >= 0:
             fx += (AudioEffect(self.blip, 'blip.wav'),)
         return fx

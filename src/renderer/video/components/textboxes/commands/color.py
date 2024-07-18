@@ -12,7 +12,7 @@ class ColorCommand(Command, prefix='c'):
                 'w': (255, 255, 255),
                 'r': (255, 0, 0),
                 'g': (0, 255, 0),
-                'b': (0, 0, 255),
+                'b': (0, 192, 255),
             }[input])
         except KeyError:
             raise ValueError(f'Invalid color: {input}')
