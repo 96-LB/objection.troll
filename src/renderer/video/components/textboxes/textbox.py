@@ -49,14 +49,14 @@ class Textbox(Container[Line]):
             color=(255, 255, 255),
             font=cls.font,
             height=cls.line_height,
-            last_blip=float('inf') # so the first char blips
+            last_blip=float('inf'), # so the first char blips
         )
         lines = split_lines(input)
         for line in lines:
             child = Line.from_input(line, child)
             children.append(child)
-        return cls(children=tuple(children))
         
+        return cls(children=tuple(children))
     
     
     @abstractmethod

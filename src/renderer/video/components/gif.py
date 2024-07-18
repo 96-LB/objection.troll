@@ -18,11 +18,6 @@ class Gif(Component):
     
     
     @cached_property
-    def delay(self):
-        return self.time
-    
-    
-    @cached_property
     def time(self):
         return sum(self.times)
     

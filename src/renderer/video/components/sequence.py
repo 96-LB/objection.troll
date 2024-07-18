@@ -1,8 +1,8 @@
 from functools import cached_property
 
+from ..context import Context
 from .component import Component
 from .container import Container
-from video.context import Context
 
 
 class Sequence[T: Component](Container[T]):

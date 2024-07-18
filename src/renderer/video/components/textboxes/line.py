@@ -27,8 +27,6 @@ class Line(Container[Char | Command]):
         children: list[Char | Command] = []
         text, commands = Command.parse(input + ' ')
         curr, next = '', text.replace(Command.SIG, '')
-        index = 0
-        
         child = Char(
             char='',
             next='',
@@ -36,11 +34,13 @@ class Line(Container[Char | Command]):
             pause=0,
             color=prev.color,
             font=prev.font,
-            last_blip=prev.last_blip, # so the first char blips
+            last_blip=prev.last_blip,
         )
+        
+        c = 0 # command index
         for i in range(len(text)):
-            if text[i] == Command.SIG:
-                command = commands[index]
+            if text[i] == Command.SIG: # next character is a command
+                command = commands[c]
                 match command:
                     case TextSpeedCommand(speed):
                         child = child.but(text_speed=speed)
@@ -48,7 +48,7 @@ class Line(Container[Char | Command]):
                         child = child.but(color=color)
                     case _:
                         children.append(command)
-                index += 1
+                c += 1
             else:
                 char = next[0]
                 

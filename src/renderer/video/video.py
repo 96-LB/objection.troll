@@ -6,7 +6,7 @@ from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.audio.AudioClip import CompositeAudioClip
 
-from video.components.scene import Scene
+from .components.scene import Scene
 
 
 SAMPLE_RATE = 44100 # 48000 causes weird artifacts for some reason
@@ -42,7 +42,7 @@ def get_audio_clip(scene: Scene):
 def make_video(image_clip: ImageSequenceClip, audio_clip: CompositeAudioClip | None, output: str):
     if audio_clip:
         image_clip.audio = audio_clip.subclip(0, image_clip.duration)
-    image_clip.write_videofile(output, audio_fps=SAMPLE_RATE)
+    image_clip.write_videofile(output, audio_fps=SAMPLE_RATE, temp_audiofile='temp/audio.mp3')
 
 
 def render_scene(scene: Scene, output: str, temp_path: str, fps: float, *, verbose: bool = True):
