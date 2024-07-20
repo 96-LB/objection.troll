@@ -16,7 +16,7 @@ scene = Scene(
             height=640,
             background=Gif.open('img/bg.jpg'),
             foreground=Gif.open('img/desk.png'),
-            textbox=TrilogyTextbox.from_input('This is bad. Really, really bad.[/p1250] Like really really really really really really really really bad.'),
+            textbox=TrilogyTextbox.from_input('This is bad. Really, [/ss][/bgs realization]really bad.[/p1250] Like really really really bad. Like [/sl]EXTREMELY bad!'),
             characters=(
                 Character(
                     pre=Gif.open('img/Damage.gif'),
@@ -47,7 +47,7 @@ scene = Scene(
 )
 
 start = time()
-render_scene(scene, 'output', 'temp', 60, skip_img=True)
+render_scene(scene, 'output', 'temp', 60, skip_img=False)
 out = time() - start
 
 print(f'Finished in {out:.2f}s')
