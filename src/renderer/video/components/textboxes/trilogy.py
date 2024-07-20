@@ -5,7 +5,7 @@ from PIL import ImageFont
 
 
 FONT = ImageFont.truetype('aa.otf', 24)
-class TrilogyTextbox(Textbox, x=120, y=496, width=740, line_height=32, font=FONT):
+class TrilogyTextbox(Textbox, x=120, y=496, width=740, line_height=32, font=FONT): # TODO: this can probably be done better
     
     def draw(self, ctx: Context):
         if ctx.time > 0:

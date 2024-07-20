@@ -1,4 +1,3 @@
- # TODO: ERIC: create ShakeEffect
 from .effect import Effect
 
 

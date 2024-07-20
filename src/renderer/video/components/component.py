@@ -22,6 +22,10 @@ class Component(Pod, ABC):
     def effects(self) -> PList[Effect]:
         ...
     
+    # @cache # cache seems to typecast this to Any
+    def get_effects[T: Effect](self, type: type[T]):
+        return tuple(effect for effect in self.effects if isinstance(effect, type))
+    
     @abstractmethod
     def draw(self, ctx: Context):
         ...

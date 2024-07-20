@@ -5,6 +5,7 @@ from time import time
 from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.audio.AudioClip import CompositeAudioClip
+from moviepy.audio.fx.volumex import volumex
 
 from video.components.scene import Scene
 from video.effects import AudioEffect
@@ -33,15 +34,14 @@ def get_image_clip(scene: Scene, path: str, fps: float, *, skip: bool = False, v
 
 def get_audio_clip(scene: Scene):
     @cache
-    def get_audio(file: str):
+    def get_audio(file: str) -> AudioFileClip:
         if os.path.isfile(file):
-            return AudioFileClip(file)
+            return volumex(AudioFileClip(file), 0.5)
         raise FileNotFoundError(f'File not found: {file}')
     
     clips = [
         get_audio(effect.audio).set_start(round(effect.time * SAMPLE_RATE) / SAMPLE_RATE)
-        for effect in scene.effects
-        if isinstance(effect, AudioEffect)
+        for effect in scene.get_effects(AudioEffect)
     ]
     
     return CompositeAudioClip(clips) if clips else None

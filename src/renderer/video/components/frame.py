@@ -7,8 +7,7 @@ from .gif import Gif
 from .textboxes import Textbox
 from util.pod import PList
 from video.context import Context
-from video.effects import FlashEffect
-from video.effects import ShakeEffect
+from video.effects import FlashEffect, ShakeEffect
 
 
 class Frame(Component):
@@ -69,25 +68,12 @@ class Frame(Component):
                     break
         talk += max(0, time)
         
-        # TODO: ERIC: if there are shake commands, move ctx.x and ctx.y
-        
-        for effect in self.effects:
-            if isinstance(effect, ShakeEffect):
-                if effect.time <= ctx.time < effect.time + effect.length:
-                    if round(ctx.time*60) % 4 == 0:
-                        changeX = -12
-                        changeY = -12
-                    elif round(ctx.time*60) % 4 == 1:
-                        changeX = -12
-                        changeY = 12
-                    elif round(ctx.time*60) % 4 == 2:
-                        changeX = 12
-                        changeY = -12
-                    else:
-                        changeX = 12
-                        changeY = 12
-
-                    ctx = ctx.but(x = changeX, y=changeY)
+        rand = ctx.random()
+        for effect in self.get_effects(ShakeEffect):
+            if effect.time <= ctx.time < effect.time + effect.length:
+                x = rand.randint(-12, 13)
+                y = rand.randint(-12, 13)
+                ctx = ctx.plus(x=x, y=y)
         
         self.background.draw(ctx)
         for i, character in enumerate(self.characters):
@@ -99,15 +85,10 @@ class Frame(Component):
             else:
                 character.draw(ctx)
         self.foreground.draw(ctx)
-        
-        # TODO: ERIC: undo changes because the textbox doesn't shake
-        
-        ctx = ctx.but(x = 0, y = 0)
         self.textbox.draw(ctx.plus(time=-self.character.time))
         
-        for effect in self.effects:
-            if isinstance(effect, FlashEffect):
-                if effect.time <= ctx.time < effect.time + effect.length:
-                    t = 1 - (ctx.time - effect.time) / effect.length
-                    a = int(math.sin(t**2 * math.pi/2) * 255) # calculate alpha # TODO: this formula is kinda bad
-                    ctx.rectangle(0, 0, self.width, self.height, (255, 255, 255, a))
+        for effect in self.get_effects(FlashEffect):
+            if effect.time <= ctx.time < effect.time + effect.length:
+                t = 1 - (ctx.time - effect.time) / effect.length
+                a = int(math.sin(t**2 * math.pi/2) * 255) # calculate alpha # TODO: this formula is kinda bad
+                ctx.rectangle(0, 0, self.width, self.height, (255, 255, 255, a))

@@ -1,3 +1,4 @@
+from random import Random
 from functools import cached_property
 
 from PIL import Image, ImageDraw
@@ -41,6 +42,10 @@ class Context(Pod):
         return self.x, self.y
     
     
+    def random(self):
+        return Random(self.global_time)
+    
+    
     def rectangle(self, x1: int, y1: int, x2: int, y2: int, rgba: tuple[int, int, int, int]):
         image = Image.new('RGBA', (x2 - x1, y2 - y1), rgba)
-        self.image.alpha_composite(image, (x1, y1))
+        self.image.alpha_composite(image, (self.x + x1, self.y + y1))

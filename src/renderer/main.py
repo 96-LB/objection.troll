@@ -6,6 +6,7 @@ from video.components.frame import Frame
 from video.components.scene import Scene
 from video.components.textboxes import TrilogyTextbox
 from video.effects import AudioEffect, FlashEffect
+from video.effects.shake import ShakeEffect
 from video.video import render_scene
 
 
@@ -22,7 +23,7 @@ scene = Scene(
                     pre=Gif.open('img/Damage.gif'),
                     idle=Gif.open('img/Cornered.gif'),
                     talk=Gif.open('img/Cornered_talk.gif'),
-                    fx=(AudioEffect(0, 'explosion.wav'), FlashEffect(0, 0.1))
+                    fx=(AudioEffect(0, 'explosion.wav'), FlashEffect(0, 0.1), ShakeEffect(0, 0.25))
                 )
             ,),
             active_index=0,
@@ -47,7 +48,7 @@ scene = Scene(
 )
 
 start = time()
-render_scene(scene, 'output', 'temp', 60, skip_img=False)
+render_scene(scene, 'output', 'temp', 60, skip_img=True)
 out = time() - start
 
 print(f'Finished in {out:.2f}s')

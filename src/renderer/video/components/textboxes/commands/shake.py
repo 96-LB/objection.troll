@@ -1,11 +1,9 @@
- # TODO: ERIC: create ShakeCommand
 from ..char import Char
 from .command import Command
 from video.effects import ShakeEffect
 
 
 class ShakeCommand(Command, prefix = "s"):
-
     length: float
     
     @classmethod

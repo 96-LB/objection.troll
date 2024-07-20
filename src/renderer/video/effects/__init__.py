@@ -4,4 +4,4 @@ from .flash import FlashEffect
 from .shake import ShakeEffect
 
 
-__all__ = ['AudioEffect', 'Effect', 'FlashEffect', 'ShakeEffect'] # TODO: ERIC: import ShakeEffect
+__all__ = ['AudioEffect', 'Effect', 'FlashEffect', 'ShakeEffect']
