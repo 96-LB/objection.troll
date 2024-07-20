@@ -126,7 +126,7 @@ def process(data):
         frame.text = re.sub(r'([,-])(\s)', r'\1[#p100]\2', frame.text)
         frame.text = re.sub(r'(Mr.|Ms.|Mrs.|Dr.)(\[#p250\])', r'\1', frame.text)
         frame.text = re.sub(r'(--)(\[#p100\])( )', r'\1\3', frame.text)
-        if frame.text and frame.text[-1] not in '.?!-)],':
+        if frame.text and frame.text[-1] not in '.?!-)],' and not (frame.merge or frame.goNext):
             frame.text += '.'
         
         i += 1

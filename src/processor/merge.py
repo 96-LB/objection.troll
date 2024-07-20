@@ -2,7 +2,7 @@ def merge(data):
     out = {
         'type': 'scene',
         'options': {
-            'chatbox': 0,
+            'chatbox': data[0]['options']['chatbox'] if data else 0,
             'textSpeed': 30,
             'textBlipFrequency': 64,
             'autoplaySpeed': 750,
