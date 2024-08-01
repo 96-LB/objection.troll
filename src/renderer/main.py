@@ -23,7 +23,9 @@ scene = Scene(
                     pre=Gif.open('img/Damage.gif'),
                     idle=Gif.open('img/Cornered.gif'),
                     talk=Gif.open('img/Cornered_talk.gif'),
-                    fx=(AudioEffect(0, 'explosion.wav'), FlashEffect(0, 0.1), ShakeEffect(0, 0.25))
+                    fx=(AudioEffect(0, 'explosion.wav'), FlashEffect(0, 0.1), ShakeEffect(0, 0.25)),
+                    x = -300,
+                    y = -100
                 )
             ,),
             active_index=0,
@@ -39,7 +41,9 @@ scene = Scene(
                     pre=Gif.empty(),
                     idle=Gif.open('img/Stand.gif'),
                     talk=Gif.open('img/Stand_talk.gif'),
-                    fx=()
+                    fx=(),
+                    x=200,
+                    y=100
                 )
             ,),
             active_index=0,
@@ -48,7 +52,7 @@ scene = Scene(
 )
 
 start = time()
-render_scene(scene, 'output', 'temp', 60, skip_img=True)
+render_scene(scene, 'output', 'temp', 60, skip_img=False)
 out = time() - start
 
 print(f'Finished in {out:.2f}s')

@@ -12,6 +12,9 @@ class Character(Component):
     idle: Gif
     talk: Gif
     fx: PList[Effect]
+    x: int
+    y: int
+
     
     @cached_property
     def size(self):
@@ -28,7 +31,9 @@ class Character(Component):
         return self.fx
     
     
+
     def draw(self, ctx: Context, talking: bool = False):
+        ctx = ctx.plus(x=self.x, y=self.y)
         if talking:
             self.talk.draw(ctx)
         else:

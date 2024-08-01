@@ -79,7 +79,9 @@ class Frame(Component):
         for i, character in enumerate(self.characters):
             if i == self.active_index:
                 if ctx.time < self.character.time:
+                    ctx = ctx.plus(x=character.x, y=character.y)
                     character.pre.draw(ctx)
+                    ctx = ctx.plus(x=-character.x, y=-character.y)
                 else:
                     character.draw(ctx.but(time=talk), talking=talking)
             else:
